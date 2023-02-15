@@ -1,7 +1,7 @@
 const express = require("express");
 const middlewares = require("./middlewares/");
 
-const { v4: uuidv4, validate } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 const utils = require("./utils");
 
 const app = express();
@@ -22,7 +22,7 @@ const PORT = 3001
  * O Middleware é um interceptador de requisições que pode interromper totalmente uma requisição ou alterar dados da requisição
  */
 
-// MIDDLEWARES
+// DECLARANDO OS MIDDLEWARES
 const { logRequests, validateProjectUUID } = middlewares;
 app.use(express.json()); // Middleware declarando que os servidores vão receber parametros JSON
 app.use(logRequests); // Middleware que informa por console qual rota está sendo requisitada

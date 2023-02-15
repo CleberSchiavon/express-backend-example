@@ -1,7 +1,6 @@
 function logRequests(request, response, next) {
   const { method, url } = request;
 
-  
   request.on('finish', () => {
     return 'Cabo'
   })
