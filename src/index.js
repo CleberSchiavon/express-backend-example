@@ -1,12 +1,12 @@
 const express = require("express");
 const middlewares = require("./middlewares/");
 
-const { v4: uuidv4 } = require("uuid");
-const utils = require("./utils");
+const controllers = require("./controllers/");
 
 const app = express();
 
-const PORT = 3001
+const PORT = 3001;
+const { projectController } = controllers;
 
 /**
  * Tipos de parametros existentes
@@ -31,62 +31,23 @@ app.use("/projects/:id", validateProjectUUID); // Middleware informando que TODA
 const projects = [];
 
 app.get("/projects", (request, response) => {
-  const { title } = request.query;
+  return projectController.getAllProjects(response, projects);
+});
 
-  const results = title
-    ? projects.filter((project) => project.title.includes(title))
-    : projects;
-
-  return response.json(results);
+app.get("/projects/:id", (request, response) => {
+  return projectController.getProjectsById(request, response, projects);
 });
 
 app.post("/projects", (request, response) => {
-  const { title, owner } = request.body;
-  const project = { id: uuidv4(), title, owner };
-
-  projects.push(project);
-  return response.json(project);
+  return projectController.createAProject(request, response, projects);
 });
 
 app.put("/projects/:id", (request, response) => {
-  // Pegando os parametros que foram enviados com a rota
-  const { id } = request.params;
-  const { title, owner } = request.body;
-
-  const projectIndex = projects.findIndex((project) => project.id === id);
-
-  if (projectIndex < 0) {
-    return response
-      .status(400)
-      .json(utils.errorSyntax(404, "Project not found"));
-  }
-
-  const project = {
-    id,
-    title,
-    owner,
-  };
-
-  projects[projectIndex] = project;
-
-  return response.json(project);
+  return projectController.editAProduct(request, response, projects);
 });
 
 app.delete("/projects/:id", (request, response) => {
-  // Pegando os parametros que foram enviados com a rota
-  const { id } = request.params;
-
-  const projectIndex = projects.findIndex((project) => project.id === id);
-
-  if (projectIndex < 0) {
-    return response
-      .status(400)
-      .json(utils.errorSyntax(400, "Projeto não encontrado"));
-  }
-
-  projects.splice(projectIndex, 1); // Removendo o projeto do array de projetos baseado no Index
-
-  return response.status(204).send();
+  return projectController.deleteAProduct(request, response, projects);
 });
 
 app.listen(PORT, () => {
