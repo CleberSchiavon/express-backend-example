@@ -2,11 +2,10 @@ const express = require("express");
 const middlewares = require("./middlewares/");
 
 const controllers = require("./controllers/");
-
+const { projectRoutes } = require("./routes/");
 const app = express();
 
 const PORT = 3001;
-const { projectController } = controllers;
 
 /**
  * Tipos de parametros existentes
@@ -28,28 +27,10 @@ app.use(express.json()); // Middleware declarando que os servidores vão receber
 app.use(logRequests); // Middleware que informa por console qual rota está sendo requisitada
 app.use("/projects/:id", validateProjectUUID); // Middleware informando que TODAS as rotas que tiver um ID vão ser interceptadas pra verificar se o UUID é valido
 
-const projects = [];
+// DECLARANDO AS ROTAS DO PROJETO
+app.use(projectRoutes);
 
-app.get("/projects", (request, response) => {
-  return projectController.getAllProjects(response, projects);
-});
-
-app.get("/projects/:id", (request, response) => {
-  return projectController.getProjectsById(request, response, projects);
-});
-
-app.post("/projects", (request, response) => {
-  return projectController.createAProject(request, response, projects);
-});
-
-app.put("/projects/:id", (request, response) => {
-  return projectController.editAProduct(request, response, projects);
-});
-
-app.delete("/projects/:id", (request, response) => {
-  return projectController.deleteAProduct(request, response, projects);
-});
-
+// Colocando o app pra rodar
 app.listen(PORT, () => {
   console.log(`Server rodando na porta ${PORT}`);
 });
