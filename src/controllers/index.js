@@ -1,5 +1,5 @@
-const projectController = require('./projectController');
+const projectController = require("./projectController");
 
 module.exports = {
-  projectController: projectController
-}
+  projectController: projectController,
+};

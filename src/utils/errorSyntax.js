@@ -1,8 +1,8 @@
 function errorSyntax(errorCode, errorMessage) {
   return {
     errorCode: errorCode,
-    errorMessage: errorMessage
-  }
+    errorMessage: errorMessage,
+  };
 }
 
 module.exports = errorSyntax;
